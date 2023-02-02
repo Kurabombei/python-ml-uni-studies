@@ -2,9 +2,9 @@ import math
 
 
 def read_triangle_side_lengths():
-    a = int(input('Введіть довжину сторони А: '))
-    b = int(input('Введіть довжину сторони B: '))
-    c = int(input('Введіть довжину сторони C: '))
+    a = int(float(input('Введіть довжину сторони А: ')))
+    b = int(float(input('Введіть довжину сторони B: ')))
+    c = int(float(input('Введіть довжину сторони C: ')))
     return [a, b, c]
 
 
