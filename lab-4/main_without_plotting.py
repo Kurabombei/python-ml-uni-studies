@@ -32,26 +32,11 @@ def main():
     angle, intensity = read_from_file('Variant_3.txt')
     print(f'angle: {angle[0:10]}')
     print(f'intensity: {intensity[0:10]}')
-    fig = plt.figure(figsize=(10, 6))
-    plt1 = fig.add_subplot()
-    plt1.plot(angle, intensity, label='inicial data', color='lightblue', linewidth=2)
-    xlabel('angle')
-    ylabel('intensity')
-    title('initial data')
-    legend()
 
     mean_angle, mean_intensity = get_mean_pairs(angle, intensity)
     mean_angle = np.array(mean_angle).astype(float)
     mean_intensity = np.array(mean_intensity).astype(float)
     median_angle, median_intensity = get_median_pairs(angle, intensity)
-
-    fig2 = plt.figure(figsize=(10, 6))
-    plt2 = fig2.add_subplot()
-    plt2.plot(mean_angle, mean_intensity, label='Mean pairs', color='red', linewidth=2)
-    plt2.plot(median_angle, median_intensity, label='Median pairs', color='blue', linewidth=2)
-
-    title('Mean and median modified pairs')
-    legend()
 
     # 2. Застосувати фільтр низьких частот (для відсікання шумів в сигналі) та фільтр високих частот (для відсікання постійної складої сигналу). Праметри для ФНЧ та ФВЧ вибрати самостійно, шляхом аналізу вхідних даних. Результат фільтрування вивести в графічному вікні.
 
@@ -61,16 +46,6 @@ def main():
     filtered_low_angle, filtered_low_intensity = get_filtered_low_pairs(mean_angle, mean_intensity, low_threshold)
     filtered_high_angle, filtered_high_intensity = get_filtered_high_pairs(mean_angle, mean_intensity, high_threshold)
 
-    fig3 = plt.figure(figsize=(10, 6))
-    plt3 = fig3.add_subplot()
-    plt3.plot(filtered_low_angle, filtered_low_intensity, label='filtered low pairs', color='red', marker='x')
-    plt3.plot(filtered_low_angle, np.full(size(filtered_low_angle), low_threshold), label='low threshhold', color='red',
-              linewidth=2)
-    plt3.plot(filtered_high_angle, filtered_high_intensity, label='filtered high pairs', color='blue', marker='x')
-    plt3.plot(filtered_high_angle, np.full(size(filtered_high_angle), high_threshold), label='high threshhold',
-              color='blue', linewidth=2)
-    legend()
-    title('filtered pairs with high and low threshholds')
     # 3. Апроксимувати задану функцію з використанням засобів python. В одному графічному вікні вивести: вхідні дані,
     # отриманий результат апроксимації, та результат накладання двох графіків.
     x_data = np.linspace(np.min(mean_angle), np.max(mean_angle), size(mean_angle))
@@ -109,12 +84,6 @@ def main():
     zero_indices = np.where(np.diff(np.sign(adjusted_intensity)))[0]
     zeros_x = np.array(mean_angle)[zero_indices]
 
-    fig5 = plt.figure(figsize=(10, 6))
-    plt5 = fig5.add_subplot()
-    plt5.plot(mean_angle, adjusted_intensity, label='Adjusted intensity', color='blue')
-    plt5.plot(zeros_x, np.zeros_like(zeros_x), 'ro', label='Zeros')
-    plt5.plot(mean_angle, np.full(size(mean_angle), 0), color='pink', label='y=0')
-
     # 5. Знайти та візуально показати усі мінімальні та максимальні значення функції, для даних, які знаходяться по
     # обидві сторони від осі абсцис. Підрахувати та вивести їх значення у вигляді таблиці в окремому файлі.
     x = mean_angle
@@ -140,24 +109,6 @@ def main():
 
     moving_average_y = moving_average_filter(adjusted_intensity, 9)
     median_y = median_filter(adjusted_intensity, 9)
-
-    fig8 = plt.figure()
-    plt8_1 = fig8.add_subplot(2, 2, 1)
-    plt8_1.plot(x, y, label='Input data', color='blue')
-    plt8_1.plot(x, moving_average_y, label='Moving average', color='magenta')
-    plt8_2 = fig8.add_subplot(2, 2, 2)
-    plt8_2.plot(x, y, label='Input data', color='blue')
-    plt8_2.plot(x, median_y, label='Median', color='green')
-    plt8_3 = fig8.add_subplot(2, 1, 2)
-    plt8_3.plot(x, y, label='Input data', color='blue')
-    plt8_3.plot(x, moving_average_y, label='Moving average', color='magenta')
-    plt8_3.plot(x, median_y, label='Median', color='green')
-
-    plt8_1.set_title('Вхідні дані та профільтровані ковзаючим середнім фільтром')
-    plt8_2.legend()
-    plt8_2.set_title('Вхідні дані та профільтровані медіанним фільтром')
-    plt8_3.legend()
-    plt8_3.set_title('Вхідні дані, та результати фільтрування двох фільтрів разом')
 
     # 8. Порівняти кількість отриманих максимумів функції без фільтрування та з фільтруванням вхідної функції.
     max_moving_average_all_y_size, min_moving_average_all_y_size = find_all_max_and_mins_and_plot(x, moving_average_y,
